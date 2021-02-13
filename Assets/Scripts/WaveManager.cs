@@ -77,35 +77,40 @@ public class WaveManager : MonoBehaviour
         time -= Time.deltaTime;
         if (time < 0)
         {
-            if (isRandomWaves)
-            {
-                totalWaves[0].GetComponent<Wave>().spawnRandomEnemies(wave * 100);
-            }
-            else {
-                if (wave > totalWaves.Length)
-                {
-                    allWavesCompleted = true;
-                        return;
-                }
-                totalWaves[wave].GetComponent<Wave>().startWave();
-            }
-            wave++;
+            NewWave();
+        }
+    }
 
-            //:x
-            time = 60;
-            wave += 1;
-            int[] indexArray = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17};
-            List<int> buttonsIndex = new List<int>();
-            for (int i = wave < 18 ? wave : 18; i > 0; i -= 1)
+    void NewWave()
+    {
+        time = 60;
+        wave += 1;
+
+        if (isRandomWaves)
+        {
+            totalWaves[0].GetComponent<Wave>().spawnRandomEnemies(wave * 100);
+        }
+        else
+        {
+            if (wave > totalWaves.Length)
             {
-                int index = UnityEngine.Random.Range(0, indexArray.Length);
-                buttonsIndex.Add(indexArray[index]);
-                RemoveAt(ref indexArray, index);
+                allWavesCompleted = true;
+                return;
             }
-            foreach(int index in buttonsIndex)
-            {
-                buttons[index].GetComponent<ButtonController>().isActivated = false;
-            }
+            totalWaves[wave].GetComponent<Wave>().startWave();
+        }
+
+        int[] indexArray = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
+        List<int> buttonsIndex = new List<int>();
+        for (int i = wave < 18 ? wave : 18; i > 0; i -= 1)
+        {
+            int index = UnityEngine.Random.Range(0, indexArray.Length);
+            buttonsIndex.Add(indexArray[index]);
+            RemoveAt(ref indexArray, index);
+        }
+        foreach (int index in buttonsIndex)
+        {
+            buttons[index].GetComponent<ButtonController>().isActivated = false;
         }
     }
 
