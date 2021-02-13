@@ -9,6 +9,8 @@ public class PlayerScript : MonoBehaviour
     private float scale;
     public Rigidbody2D rb;
     public GameObject cam;
+    public float Life = 100;
+    public float maxLife = 100;
 
     void Start()
     {

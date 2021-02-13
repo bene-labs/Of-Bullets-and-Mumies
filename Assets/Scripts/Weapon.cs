@@ -6,13 +6,17 @@ public class Weapon : MonoBehaviour
 {
     public GameObject Player;
     public GameObject Bullet;
-    public string WeaponType = "shotgun";
+    public int bulletsToShootAtOnes;
     public int Streuung = 60;
     private float scale;
+    private float distanceToPlayer;
+    public float sizze;
+    public float mult;
     // Start is called before the first frame update
     void Start()
     {
         scale = this.transform.localScale.x;
+        distanceToPlayer = (Player.transform.position - transform.position).magnitude;
     }
 
     // Update is called once per frame
@@ -20,7 +24,7 @@ public class Weapon : MonoBehaviour
     {
 
         //Get the Screen positions of the object
-        Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(transform.position);
+        Vector2 positionOnScreen = Camera.main.WorldToViewportPoint(Player.transform.position);
 
         //Get the Screen position of the mouse
         Vector2 mouseOnScreen = (Vector2)Camera.main.ScreenToViewportPoint(Input.mousePosition);
@@ -28,31 +32,34 @@ public class Weapon : MonoBehaviour
         //Get the angle between the points
         float angle = Mathf.Atan2(positionOnScreen.y - mouseOnScreen.y, positionOnScreen.x - mouseOnScreen.x) * Mathf.Rad2Deg;
         Vector3 vecMousePlayer =  mouseOnScreen - positionOnScreen;
-        if (vecMousePlayer.magnitude < 0.2)
+        if (vecMousePlayer.magnitude < distanceToPlayer / 10)
+        {
             return;
+        }
         vecMousePlayer.Normalize();
-        transform.position = vecMousePlayer * 0.5f + Player.transform.position;
+        vecMousePlayer.z = 0;
+        transform.position = vecMousePlayer * distanceToPlayer + Player.transform.position;
         //Ta Daaa
 
         if (positionOnScreen.x < mouseOnScreen.x)
         {
-            transform.localScale = new Vector3(scale, scale);
-            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 180 + angle));
+            transform.localScale = new Vector2(scale, -scale);
+            transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
         }
         else
         {
-            transform.localScale = new Vector3(-scale, scale);
+            transform.localScale = new Vector2(-scale, scale);
             transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle));
         }
         if (Input.GetMouseButtonUp(0))
         {
-            if (WeaponType == "default")
+            if (bulletsToShootAtOnes == 1)
             {
                 shoot(angle, vecMousePlayer);
             }
-            else if (WeaponType == "shotgun")
+            else if (bulletsToShootAtOnes > 1)
             {
-                shot(4, angle, vecMousePlayer);
+                shot(bulletsToShootAtOnes, angle, vecMousePlayer);
             }
         }
     }
@@ -82,10 +89,15 @@ public class Weapon : MonoBehaviour
 
     private void shoot(float angle, Vector3 vecMousePlayer)
     {
-        GameObject go = (GameObject)Instantiate(Bullet, transform.position + vecMousePlayer, Quaternion.identity);
-        go.GetComponent<bulletCreator>().isClone = true;
+        sizze = this.GetComponent<SpriteRenderer>().sprite.bounds.extents.x * scale + Bullet.GetComponent<SpriteRenderer>().bounds.extents.x;
+        mult = sizze / vecMousePlayer.magnitude;
+        GameObject go = (GameObject)Instantiate(Bullet, transform.position + vecMousePlayer * mult , Quaternion.identity);
+        bulletCreator bu = go.GetComponent<bulletCreator>();
+        bu.isClone = true;
+        bu.Player = Player;
         Rigidbody2D rb = go.GetComponent<Rigidbody2D>();
-        go.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle + 90));
+        go.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, angle + 180));
+        bu.scale = Bullet.GetComponent<bulletCreator>().scale;
         rb.velocity = vecMousePlayer * 2;
         go.SetActive(true);
     }

@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 7353802234079856229}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.14, y: -4.21, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -93,12 +93,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 7353802234079856229}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9190721999538674ca720d91a7ad7bc3, type: 3}
+  m_Script: {fileID: 11500000, guid: 111576b03037b404bad3f11afe5430c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isClone: 0
   damage: 10
-  range: 1
+  range: 10
+  Player: {fileID: 869092808620925774, guid: 14851ff9ab63696428e197feacc3b650, type: 3}
+  startPos: {x: 0, y: 0, z: 0}
 --- !u!61 &4444167359120320833
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -112,18 +114,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.00041395426, y: -0.0000010728836}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 9, y: 4.5}
+    oldSize: {x: 0.05, y: 0.05}
     newSize: {x: 9, y: 4.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 9, y: 4.5}
+  m_Size: {x: 0.050301433, y: 0.049845457}
   m_EdgeRadius: 0
 --- !u!50 &3417448932832629948
 Rigidbody2D:
